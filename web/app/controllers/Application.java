@@ -57,7 +57,20 @@ public class Application extends Controller {
 
     public static void doSetMark(String student, Integer mark) {
         User u = User.loadUser(student);
-        u.setMark(mark);
+	try{	
+		if (mark>0 && mark <=10){
+			u.setMark(mark);
+		}
+	else{
+		//Show message: mark must be in range {0,10}
+		render("PublicContentBase/markError.html");
+	}
+	}catch (NullPointerException exception){
+		//Manage the exceptions and show error message for example
+		render("PublicContentBase/markError.html");
+	}catch (Exception exception){
+		//Show other exceptions error
+	}
         u.save();
         index();
     }
